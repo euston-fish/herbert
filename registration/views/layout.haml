@@ -1,10 +1,11 @@
-%html
+%html{:lang => "en"}
   %head
+    %meta{:charset => "utf-8"}
     %title Herbert
     %link{rel: "stylesheet", href: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity: "sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin: "anonymous"}
+    %link{:href => "carousel.css", :rel => "stylesheet"}
   %body
-    .container
-      .row
-        = yield
-      .row
-        &copy; Euston Fish 🐟
+    = yield
+    %footer
+      %p &copy; Euston Fish 🐟
+  
