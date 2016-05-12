@@ -1,20 +1,20 @@
 {
   "ok": true,
   "self": {
-    "id": "<%= @current_user[:id] %>",
-    "name": "<%= @current_user[:name] %>",
+    "id": "<%= user[:id] %>",
+    "name": "<%= user[:name] %>",
   },
   "team": {
-    "id": "<%= @team[:id] %>",
-    "name": "<%= @team[:name] %>",
+    "id": "<%= team[:id] %>",
+    "name": "<%= team[:name] %>",
   },
   "channels": [
   ],
   "ims": [
     {
-      "id": "<%= @current_user[:dm_id] %>",
+      "id": "<%= user[:dm_id] %>",
       "is_im": true,
-      "user": "<%= @current_user[:id] %>",
+      "user": "<%= user[:id] %>",
       "created": 1458275992,
       "has_pins": false,
       "last_read": "0000000000.000000",
@@ -26,19 +26,19 @@
   ],
   "users": [
     {
-      "id": "<%= @current_user[:id] %>",
-      "team_id": "<%= @team[:id] %>",
-      "name": "<%= @current_user[:name] %>",
+      "id": "<%= user[:id] %>",
+      "team_id": "<%= team[:id] %>",
+      "name": "<%= user[:name] %>",
       "deleted": false,
       "status": null,
       "color": "674b1b",
-      "real_name": "<%= @current_user[:real_name] %>",
+      "real_name": "<%= user[:real_name] %>",
       "profile": {
-        "first_name": "<%= @current_user[:first_name] %>",
-        "last_name": "<%= @current_user[:last_name] %>",
-        "real_name": "<%= @current_user[:real_name] %>",
-        "real_name_normalized": "<%= @current_user[:real_name] %>",
-        "email": "<%= @current_user[:email] %>"
+        "first_name": "<%= user[:first_name] %>",
+        "last_name": "<%= user[:last_name] %>",
+        "real_name": "<%= user[:real_name] %>",
+        "real_name_normalized": "<%= user[:real_name] %>",
+        "email": "<%= user[:email] %>"
       },
       "is_admin": false,
       "is_owner": false,
@@ -49,5 +49,5 @@
       "presence": "away"
     }
   ],
-  "url": "<%= @team[:url] %>"
+  "url": "<%= team[:url] %>"
 }
