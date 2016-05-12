@@ -32,7 +32,7 @@ class AuthManager
       raise cont['error'] unless cont['ok']
       
       # Create the bot on another process
-      @redis.publish NEW_TEAM_CHANNEL, rs.body
+      @redis.publish NEW_TEAM_CHANNEL, res.body
       return cont
     else
       raise "Oh shit: #{res.code}"

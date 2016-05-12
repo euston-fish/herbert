@@ -1,3 +1,5 @@
 require_relative 'herbert'
+require 'pry'
 
-Herbert.new(ARGV[0], log: true).run
+bot = HerbertBot.new(ARGV[0], log: true)
+binding.pry
