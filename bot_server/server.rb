@@ -1,5 +1,6 @@
 require 'json'
 require 'redis'
+require_relative 'herbert'
 
 NEW_TEAM_CHANNEL = 'new_teams'
 
@@ -11,6 +12,11 @@ class BotServer
   def create(info)
     puts "Received info: #{info['team_id']}"
     self.store_team info
+    Thread.new do
+      puts "Starting Herbert bot for #{info['team_id']}"
+      hbot = Herbert.new info['bot']['bot_access_token'], log: true
+      hbot.run
+    end
   end
   
   def store_team(hash)
