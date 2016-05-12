@@ -1,8 +1,7 @@
-require 'drb/drb'
 require 'json'
 require 'redis'
 
-URI = 'druby://localhost:3474'
+NEW_TEAM_CHANNEL = 'new_teams'
 
 class BotServer
   def initialize(redis)
@@ -34,6 +33,10 @@ end
 redis = Redis.new
 bot_server = BotServer.new redis
 
-$SAFE = 1   # disable eval() and friends
-DRb.start_service(URI, bot_server)
-DRb.thread.join
+redis.subscribe(NEW_TEAM_CHANNEL) do |on|  
+  on.message do |channel, msg|
+    # If this isn't on a new thread, Redis will stay in 'looking for info' mode
+    # and timeout when you try and insert things
+    Thread.new { bot_server.create JSON.parse(msg) }
+  end
+end

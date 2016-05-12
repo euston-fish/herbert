@@ -3,15 +3,15 @@ require 'tilt/haml'
 require 'pry'
 require 'json'
 require 'net/http'
-require 'drb/drb'
+require 'redis'
 
-BOT_SERVER_URI = 'druby://localhost:3474'
+NEW_TEAM_CHANNEL = 'new_teams'
 
 AUTH_URL = 'https://slack.com/api/oauth.access'
 
 class AuthManager
-  def initialize(bot_server, client_id, client_secret)
-    @bot_server = bot_server
+  def initialize(redis, client_id, client_secret)
+    @redis = redis
     @client_secret = client_secret
     @client_id = client_id
   end
@@ -32,7 +32,7 @@ class AuthManager
       raise cont['error'] unless cont['ok']
       
       # Create the bot on another process
-      @bot_server.create cont
+      @redis.publish NEW_TEAM_CHANNEL, rs.body
       return cont
     else
       raise "Oh shit: #{res.code}"
@@ -40,15 +40,13 @@ class AuthManager
   end
 end
 
-DRb.start_service
-bot_server = DRbObject.new_with_uri(BOT_SERVER_URI)
-
 config = JSON.parse File.read(ARGV[0])
 
 client_secret = config['client_secret']
 client_id = config['client_id']
 
-auth_manager = AuthManager.new(bot_server, client_id, client_secret)
+redis = Redis.new
+auth_manager = AuthManager.new(redis, client_id, client_secret)
 
 get '/' do
   haml :index
