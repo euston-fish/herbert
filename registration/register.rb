@@ -28,7 +28,6 @@ class AuthManager
     res = Net::HTTP.get_response(uri)
 
     if res.code.to_i == 200
-      puts res.body
       cont = JSON.parse res.body
       raise cont['error'] unless cont['ok']
       

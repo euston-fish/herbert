@@ -14,7 +14,6 @@ class BotServer
     self.store_team info
   end
   
-  private
   def store_team(hash)
     team_id = hash['team_id']
     
