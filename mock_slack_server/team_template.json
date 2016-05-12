@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "self": {
+    "id": "<%= @current_user[:id] %>",
+    "name": "<%= @current_user[:name] %>",
+  },
+  "team": {
+    "id": "<%= @team[:id] %>",
+    "name": "<%= @team[:name] %>",
+  },
+  "channels": [
+  ],
+  "ims": [
+    {
+      "id": "<%= @current_user[:dm_id] %>",
+      "is_im": true,
+      "user": "<%= @current_user[:id] %>",
+      "created": 1458275992,
+      "has_pins": false,
+      "last_read": "0000000000.000000",
+      "latest": null,
+      "unread_count": 0,
+      "unread_count_display": 0,
+      "is_open": true
+    }
+  ],
+  "users": [
+    {
+      "id": "<%= @current_user[:id] %>",
+      "team_id": "<%= @team[:id] %>",
+      "name": "<%= @current_user[:name] %>",
+      "deleted": false,
+      "status": null,
+      "color": "674b1b",
+      "real_name": "<%= @current_user[:real_name] %>",
+      "profile": {
+        "first_name": "<%= @current_user[:first_name] %>",
+        "last_name": "<%= @current_user[:last_name] %>",
+        "real_name": "<%= @current_user[:real_name] %>",
+        "real_name_normalized": "<%= @current_user[:real_name] %>",
+        "email": "<%= @current_user[:email] %>"
+      },
+      "is_admin": false,
+      "is_owner": false,
+      "is_primary_owner": false,
+      "is_restricted": false,
+      "is_ultra_restricted": false,
+      "is_bot": false,
+      "presence": "away"
+    }
+  ],
+  "url": "<%= @team[:url] %>"
+}

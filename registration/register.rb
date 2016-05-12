@@ -4,6 +4,7 @@ require 'pry'
 require 'json'
 require 'net/http'
 require 'redis'
+require_relative '../mock_slack_server/team_generator'
 
 NEW_TEAM_CHANNEL = 'new_teams'
 
@@ -38,6 +39,10 @@ class AuthManager
       raise "Oh shit: #{res.code}"
     end
   end
+  
+  def create_mock_team(token)
+    
+  end
 end
 
 config = JSON.parse File.read(ARGV[0])
@@ -61,4 +66,14 @@ get '/authenticate', layout: :main do
     end
   end
   haml :success
+end
+
+get '/api/rtm.start' do
+  content_type :json
+  token = params[:token]
+  if token
+    auth_manager.create_mock_team token
+  else
+    { ok: false, error: 'No token specified' }.to_json
+  end
 end
