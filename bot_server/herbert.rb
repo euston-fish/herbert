@@ -4,6 +4,6 @@ class HerbertBot < SlackBot::Bot
   def message(msg)
     # do things
     puts 'got message'
-    @socket.send "lol this will crash"
+    msg.reply 'hey'
   end
 end

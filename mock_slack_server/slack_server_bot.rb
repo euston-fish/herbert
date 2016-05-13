@@ -6,7 +6,9 @@ class SlackBot::Channel
   attr_accessor :socket
 end
 
-class MockHerbertBot < SlackBot::Bot
+module SlackServerBot
+  include SlackBot
+  
   attr_accessor :team_info
   def get_url; end
   def run; end
@@ -30,6 +32,7 @@ class MockHerbertBot < SlackBot::Bot
     channels
     @channels[chan.id] = chan
   end
+  
   def add_user(user)
     users
     @users[user.id] = user
@@ -37,9 +40,5 @@ class MockHerbertBot < SlackBot::Bot
   
   def send_hook(*args)
     hook(*args)
-  end
-  
-  def message(msg)
-    msg.reply "Message from #{msg.user}: #{msg.text}"
   end
 end
