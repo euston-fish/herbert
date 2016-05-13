@@ -2,11 +2,11 @@
   "ok": true,
   "self": {
     "id": "<%= user[:id] %>",
-    "name": "<%= user[:name] %>",
+    "name": "<%= user[:name] %>"
   },
   "team": {
     "id": "<%= team[:id] %>",
-    "name": "<%= team[:name] %>",
+    "name": "<%= team[:name] %>"
   },
   "channels": [
   ],
@@ -31,7 +31,7 @@
       "name": "<%= user[:name] %>",
       "deleted": false,
       "status": null,
-      "color": "674b1b",
+      "color": "<%= user[:color] %>",
       "real_name": "<%= user[:real_name] %>",
       "profile": {
         "first_name": "<%= user[:first_name] %>",
@@ -47,7 +47,31 @@
       "is_ultra_restricted": false,
       "is_bot": false,
       "presence": "away"
+    },
+    {
+      "id": "<%= bot[:id] %>",
+      "team_id": "<%= team[:id] %>",
+      "name": "<%= bot[:name] %>",
+      "deleted": false,
+      "status": null,
+      "color": "<%= bot[:color] %>",
+      "real_name": "<%= bot[:real_name] %>",
+      "profile": {
+        "first_name": "<%= bot[:first_name] %>",
+        "last_name": "<%= bot[:last_name] %>",
+        "real_name": "<%= bot[:real_name] %>",
+        "real_name_normalized": "<%= bot[:real_name] %>",
+        "email": "<%= bot[:email] %>"
+      },
+      "is_admin": false,
+      "is_owner": false,
+      "is_primary_owner": false,
+      "is_restricted": false,
+      "is_ultra_restricted": false,
+      "is_bot": false,
+      "presence": "away"
     }
   ],
+  "bots": [],
   "url": "<%= team[:url] %>"
 }

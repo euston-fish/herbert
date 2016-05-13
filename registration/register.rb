@@ -41,7 +41,7 @@ class AuthManager
   end
   
   def create_mock_team(token)
-    
+    TeamGenerator.create_team Hash.new
   end
 end
 

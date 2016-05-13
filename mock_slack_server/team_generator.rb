@@ -1,18 +1,25 @@
 require 'erb'
+require 'digest/sha1'
+
+WS_URL = 'ws://localhost:8080'
 
 class TeamGenerator
-  def self.create_team
-    @@template ||= ERB.new(File.read('team_template.json'))
+  def self.hash(content)
+    Digest::SHA1.hexdigest content.to_s
+  end
+  
+  def self.create_team(bot)
+    @@template ||= ERB.new(File.read(File.expand_path('team_template.json', File.dirname(__FILE__))))
     
     team = {
-      id: 'TEAM ID',
+      id: hash(Time.now.to_s + 'team_id'),
       name: "Euston fishery",
-      url: 'google.com'
+      url: WS_URL
     }
     user = {
       name: 'john.smith',
-      dm_id: 'as;dlfkjasdf',
-      id: 'asdf',
+      dm_id: hash(Time.now.to_s + 'dm_id'),
+      id: hash(Time.now.to_s + 'user_id'),
       real_name: 'John Smith',
       first_name: 'John',
       last_name: 'Smith',
@@ -23,4 +30,4 @@ class TeamGenerator
   end
 end
 
-puts TeamGenerator.create_team
+# puts TeamGenerator.create_team
