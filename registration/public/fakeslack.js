@@ -49,14 +49,15 @@ ChatWindow.prototype = {
   },
 }
 
-var FakeSlack = function(host) {
+var FakeSlack = function(teamInfo) {
   if(!("WebSocket" in window)) {
     throw "WebSocket not available";
   }
+  
+  this.teamInfo = teamInfo;
+  var that = this;
 
-  var that=this;
-
-  this._socket = new WebSocket(host);
+  this._socket = new WebSocket(teamInfo.url);
   this._socket.onopen = function() {
     that.onopen();
   }
@@ -73,35 +74,45 @@ var FakeSlack = function(host) {
 
 FakeSlack.prototype = {
   send: function(message) {
-    this._socket.send(JSON.stringify({"type": "message", "text": message}));
+    this._socket.send(JSON.stringify({
+      "type": "message",
+      "text": message,
+      "channel": this.teamInfo.users[0].id
+    }));
   }
 }
 
 
+function doSlack(teamInfo) {
+  var cw = new ChatWindow($("#fakeSlack"));
 
-var cw = new ChatWindow($("#fakeSlack"));
+  var fs = new FakeSlack(teamInfo);
 
-var fs = new FakeSlack("ws://localhost:8080/");
+  fs.onopen = function() {
+    cw.pushMsg("Connected");
+    cw.enable();
+    cw.on_send = function(msg) {
+      fs.send(msg);
+      cw.pushMsg(msg);
+      return true;
+    }
+  }
 
-fs.onopen = function() {
-  cw.pushMsg("Connected");
-  cw.enable();
-  cw.on_send = function(msg) {
-    fs.send(msg);
-    cw.pushMsg(msg);
-    return true;
+  fs.onmessage = function(data) {
+    if(data.type === "message" && data.text) {
+      cw.pushMsg(data.text);
+    }
+  }
+
+
+  fs.onclose = function() {
+    cw.pushMsg("Disconected");
+    cw.disable();
+    cw.on_send = null;
   }
 }
 
-fs.onmessage = function(data) {
-  if(data.type === "message" && data.text) {
-    cw.pushMsg(data.text);
-  }
-}
-
-
-fs.onclose = function() {
-  cw.pushMsg("Disconected");
-  cw.disable();
-  cw.on_send = null;
-}
+$.get('/api/rtm.start?token=randomtoken', function(data) {
+  console.log(data);
+  doSlack(data);
+});
