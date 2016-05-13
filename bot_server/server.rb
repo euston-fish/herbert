@@ -62,8 +62,6 @@ pub_sub = Redis.new
 
 pub_sub.subscribe(NEW_TEAM_CHANNEL) do |on|  
   on.message do |channel, msg|
-    # If this isn't on a new thread, Redis will stay in 'looking for info' mode
-    # and timeout when you try and insert things
     bot_server.create JSON.parse(msg)
   end
 end

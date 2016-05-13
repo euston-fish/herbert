@@ -47,29 +47,6 @@
       "is_ultra_restricted": false,
       "is_bot": false,
       "presence": "away"
-    },
-    {
-      "id": "<%= bot[:id] %>",
-      "team_id": "<%= team[:id] %>",
-      "name": "<%= bot[:name] %>",
-      "deleted": false,
-      "status": null,
-      "color": "<%= bot[:color] %>",
-      "real_name": "<%= bot[:real_name] %>",
-      "profile": {
-        "first_name": "<%= bot[:first_name] %>",
-        "last_name": "<%= bot[:last_name] %>",
-        "real_name": "<%= bot[:real_name] %>",
-        "real_name_normalized": "<%= bot[:real_name] %>",
-        "email": "<%= bot[:email] %>"
-      },
-      "is_admin": false,
-      "is_owner": false,
-      "is_primary_owner": false,
-      "is_restricted": false,
-      "is_ultra_restricted": false,
-      "is_bot": false,
-      "presence": "away"
     }
   ],
   "bots": [],

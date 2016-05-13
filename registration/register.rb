@@ -42,14 +42,12 @@ class AuthManager
   end
   
   def create_mock_team(token)
-    bot = {
-      token: token
-    }
-    user = TeamGenerator.create_user
+    user = TeamGenerator.create_user(token)
     user[:token] = token
+    puts user
     
     @redis.publish NEW_DEMO_CHANNEL, user.to_json
-    return TeamGenerator.team_json(user, bot)
+    return TeamGenerator.team_json(user)
   end
 end
 
