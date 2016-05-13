@@ -8,14 +8,7 @@ class TeamGenerator
     Digest::SHA1.hexdigest content.to_s
   end
   
-  def self.create_team(bot)
-    @@template ||= ERB.new(File.read(File.expand_path('team_template.json', File.dirname(__FILE__))))
-    
-    team = {
-      id: hash(Time.now.to_s + 'team_id'),
-      name: "Euston fishery",
-      url: WS_URL
-    }
+  def self.create_user
     user = {
       name: 'john.smith',
       dm_id: hash(Time.now.to_s + 'dm_id'),
@@ -25,7 +18,18 @@ class TeamGenerator
       last_name: 'Smith',
       email: 'john@example.com',
     }
-
+    user
+  end
+  
+  def self.team_json(user, bot)
+    @@template ||= ERB.new(File.read(File.expand_path('team_template.json', File.dirname(__FILE__))))
+    
+    team = {
+      id: hash(Time.now.to_s + 'team_id'),
+      name: "Euston fishery",
+      url: WS_URL + "/#{user[:token]}"
+    }
+    # This needs team, user and bot to generate the JSON
     @@template.result binding
   end
 end

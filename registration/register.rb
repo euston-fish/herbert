@@ -7,6 +7,7 @@ require 'redis'
 require_relative '../mock_slack_server/team_generator'
 
 NEW_TEAM_CHANNEL = 'new_teams'
+NEW_DEMO_CHANNEL = 'new_demos'
 
 AUTH_URL = 'https://slack.com/api/oauth.access'
 
@@ -41,7 +42,14 @@ class AuthManager
   end
   
   def create_mock_team(token)
-    TeamGenerator.create_team Hash.new
+    bot = {
+      token: token
+    }
+    user = TeamGenerator.create_user
+    user[:token] = token
+    
+    @redis.publish NEW_DEMO_CHANNEL, user.to_json
+    return TeamGenerator.team_json(user, bot)
   end
 end
 
