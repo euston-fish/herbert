@@ -28,11 +28,11 @@ class TeamGenerator
     'sloth'
   ]
   def self.create_user(token)
-    id = Digest::SHA1.hexdigest(token)
-    first = FIRST_NAMES.sample.capitalize
-    last = LAST_NAMES.sample.capitalize
+    id = Digest::SHA1.hexdigest(Time.now.to_s + 'user_id')
+    first = FIRST_NAMES.sample
+    last = LAST_NAMES.sample
     user = {
-      name: "#{first}.#{last}".downcase,
+      name: "#{first.capitalize}.#{last.capitalize}".downcase,
       dm_id: id,
       id: id,
       real_name: "#{first} #{last}",
@@ -49,7 +49,7 @@ class TeamGenerator
     team = {
       id: Digest::SHA1.hexdigest(Time.now.to_s + 'team_id'),
       name: "Euston fishery",
-      url: WS_URL + "/#{user[:token]}"
+      url: WS_URL + "/#{Digest::SHA1.hexdigest(user[:token] + user[:dm_id])}"
     }
     # This needs team, user and bot to generate the JSON
     @@template.result binding

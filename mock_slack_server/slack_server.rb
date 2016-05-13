@@ -1,4 +1,5 @@
 require 'em-websocket'
+require 'erb'
 require 'pry'
 require 'digest/sha1'
 require 'json'
@@ -16,22 +17,23 @@ class SlackServer
     @host, @port = host, port
     @bot = bot
     @bot_socket = nil
+    @token_to_channel = Hash.new
   end
   
   def run
     EM.run do
       EM::WebSocket.run(host: @host, port: @port) do |ws|
         ws.onopen do |handshake|
-          token = handshake.path[1..-1]
-          channel_id = Digest::SHA1.hexdigest(token)
-          puts "Opened: #{token}, #{channel_id}"
-          if token_valid?(token) && @bot.channel(channel_id)
+          url_token = handshake.path[1..-1]
+          channel_id = @token_to_channel.delete(url_token)
+          puts "Opened: #{url_token}, #{channel_id}"
+          if token_valid?(url_token) && @bot.channel(channel_id)
             res = { type: "hello" }.to_json
             ws.send res
             
             @bot.channel(channel_id).socket = ws
           else
-            puts "Invalid token: #{token}"
+            puts "Invalid token: #{url_token}"
             ws.close
           end
         end
@@ -61,7 +63,7 @@ class SlackServer
   end
   
   def create_channel(user)
-    id = Digest::SHA1.hexdigest(user['token'])
+    id = user['dm_id']
     data = {
       "id" => id,
       "is_im" => true,
@@ -79,6 +81,9 @@ class SlackServer
     @bot.add_channel(chan)
     usr = SlackBot::User.new user, @bot
     @bot.add_user(usr)
+    
+    url_token = Digest::SHA1.hexdigest(user['token'] + user['dm_id'])
+    @token_to_channel[url_token] = user['dm_id']
   end
   
   def log(tag, msg)

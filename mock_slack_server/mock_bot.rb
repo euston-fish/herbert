@@ -1,5 +1,4 @@
 require 'realtime-slackbot'
-require 'erb'
 require 'json'
 require 'pry'
 
