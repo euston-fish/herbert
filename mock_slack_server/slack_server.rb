@@ -26,7 +26,7 @@ class SlackServer
     EM.run do
       EM::WebSocket.run(host: @host, port: @port) do |ws|
         ws.onopen do |handshake|
-          url_token = handshake.path[1..-1]
+          url_token = handshake.path.split('/').last
           channel_id = @token_to_channel.delete(url_token)
           puts "Opened: #{url_token}, #{channel_id}"
           if token_valid?(url_token) && @bot.channel(channel_id)
