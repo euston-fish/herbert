@@ -40,7 +40,6 @@ ChatWindow.prototype = {
       msgCont.find('.username').text('@' + data.username);
     }
     
-    data.avatar = data.avatar || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     msgCont.find('.avatar').attr('src', data.avatar);
     
     this.message_area.append(msgCont);
