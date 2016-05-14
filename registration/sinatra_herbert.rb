@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'digest/sha1'
 require 'tilt/haml'
 require 'json'
 require 'redis'
@@ -39,6 +40,7 @@ class SinatraHerbert < Sinatra::Base
   end
 
   get '/demo' do
+    @token = Digest::SHA1.hexdigest(Time.now.to_s + 'token')
     haml :demo
   end
 end

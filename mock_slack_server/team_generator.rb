@@ -30,8 +30,9 @@ class TeamGenerator
   
   def self.create_user(token)
     id = Digest::SHA1.hexdigest(Time.now.to_s + 'user_id')
-    first = FIRST_NAMES.sample
-    last = LAST_NAMES.sample
+    rand = token.split(//).reduce(0) { |n, c| n + c.ord }
+    first = FIRST_NAMES[rand % 10]
+    last = LAST_NAMES[(rand / 10) % 10]
     avatar = "/avatars/#{last}.png"
     
     user = {

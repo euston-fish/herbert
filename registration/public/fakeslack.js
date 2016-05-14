@@ -96,6 +96,11 @@ FakeSlack.prototype = {
   }
 }
 
+function connect() {
+  $.get('/api/rtm.start?token=' + token, function(data) {
+    doSlack(data);
+  });
+}
 
 function doSlack(teamInfo) {
   var me = teamInfo.users[0];
@@ -104,8 +109,10 @@ function doSlack(teamInfo) {
   var cw = new ChatWindow($("#fakeSlack"));
 
   var fs = new FakeSlack(teamInfo);
-
+  var wasOpened = false;
+  
   fs.onopen = function() {
+    wasOpened = true;
     cw.pushMsg({
       message: 'Connected',
       classes: 'update'
@@ -134,12 +141,15 @@ function doSlack(teamInfo) {
 
 
   fs.onclose = function() {
-    cw.pushMsg({
-      message: 'Disconected',
-      classes: 'update'
-    });
+    if(wasOpened) {      
+      cw.pushMsg({
+        message: 'Disconnected',
+        classes: 'update'
+      });
+    }
     cw.disable();
     cw.on_send = null;
+    window.setTimeout(connect, 5000);
   }
 }
 
@@ -147,6 +157,4 @@ $(document).ready(function() {
   $('.message_area').height($(window).height() - ($('.input_area').height() * 2));
 });
 
-$.get('/api/rtm.start?token=randomtoken', function(data) {
-  doSlack(data);
-});
+connect();
