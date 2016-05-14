@@ -2,6 +2,7 @@ var socket;
 
 var ChatWindow = function(base) {
   this.base = base;
+  this.message_template = $('#message-template').clone();
   this.message_area = this.base.children().filter(".message_area");
   this.input_area = this.base.children().filter(".input_area");
   this.message_input = this.input_area.children().filter(".message_input");
@@ -11,7 +12,7 @@ var ChatWindow = function(base) {
   var that = this;
   var onclick = function() {
     var msg = that.message_input.val();
-    if(that.on_send) {
+    if(that.on_send && that.message_input.val()) {
       if(that.on_send(msg)) {
         that.message_input.val("");
       }
@@ -28,9 +29,13 @@ var ChatWindow = function(base) {
 
 ChatWindow.prototype = {
   pushMsg: function(message) {
-    var m = $("<div/>", {"class": "message"});
-    m.append(message);
-    this.message_area.append(m);
+    var msgCont = this.message_template.clone();
+    msgCont.find('.content').text(message)
+    this.message_area.append(msgCont);
+    msgCont.show();
+    var childs = this.message_area.children()
+    var height = childs.height();
+    this.message_area.scrollTop(childs.length * height);
   },
   
   able: function(state) {

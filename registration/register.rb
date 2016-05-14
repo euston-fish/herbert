@@ -84,6 +84,6 @@ get '/api/rtm.start' do
   end
 end
 
-get '/fakeslack' do
-  haml :fakeslack
+get '/demo' do
+  haml :demo
 end

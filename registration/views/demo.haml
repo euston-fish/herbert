@@ -1,0 +1,16 @@
+.container-fluid
+  .row
+    .col-md-6.col-md-offset-3.col-sm-10.col-sm-offset-2
+      #fakeSlack
+        .message_area
+        .input-group.input_area
+          %input.message_input{type: "text", class: "form-control"}
+          %span.input-group-btn
+            %button.send_button{class: "btn", type: "submit"}
+              Send
+#message-template{style: "display: none"}
+  .message
+    %img.avatar{src: "/bot_avatar.png"}
+    .username
+    .content
+%script{src: "fakeslack.js"}
