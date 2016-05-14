@@ -85,3 +85,7 @@ get '/api/rtm.start' do
     { ok: false, error: 'No token specified' }.to_json
   end
 end
+
+get '/fakeslack' do
+  haml :fakeslack
+end
