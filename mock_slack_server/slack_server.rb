@@ -5,7 +5,8 @@ require 'digest/sha1'
 require 'json'
 require 'redis'
 
-require_relative 'mock_bot'
+require_relative 'slack_server_bot'
+require_relative '../bot_server/herbert'
 
 HOST = 'localhost'
 PORT = '8080'
@@ -96,7 +97,8 @@ class SlackServer
   end
 end
 
-herb = MockHerbertBot.new 'authkey', log: true
+HerbertBot.send(:include, SlackServerBot)
+herb = HerbertBot.new 'authkey', log: true
 
 template ||= ERB.new(File.read(File.expand_path('team_template.json', File.dirname(__FILE__))))
 
