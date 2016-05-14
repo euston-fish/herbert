@@ -38,7 +38,8 @@
         "last_name": "<%= user[:last_name] %>",
         "real_name": "<%= user[:real_name] %>",
         "real_name_normalized": "<%= user[:real_name] %>",
-        "email": "<%= user[:email] %>"
+        "email": "<%= user[:email] %>",
+        "avatar": "<%= user[:avatar] || '/user_avatar.png' %>"
       },
       "is_admin": false,
       "is_owner": false,
@@ -49,6 +50,31 @@
       "presence": "away"
     }
   ],
-  "bots": [],
+  "bots": [
+    {
+      "id": "herbert-bot-id",
+      "team_id": "<%= team[:id] %>",
+      "name": "herbert",
+      "deleted": false,
+      "status": null,
+      "color": "2b2b2b",
+      "real_name": "Herbert",
+      "profile": {
+        "first_name": "Herbert",
+        "last_name": "",
+        "real_name": "Herbert",
+        "real_name_normalized": "Herbert",
+        "email": "herbert@euston.fish",
+        "avatar": "/bot_avatar.png"
+      },
+      "is_admin": false,
+      "is_owner": false,
+      "is_primary_owner": false,
+      "is_restricted": false,
+      "is_ultra_restricted": false,
+      "is_bot": true,
+      "presence": "away"
+    }
+  ],
   "url": "<%= team[:url] %>"
 }

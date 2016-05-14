@@ -17,20 +17,24 @@ class TeamGenerator
     'yellow'
   ]
   LAST_NAMES = [
-    'echidna',
-    'horse',
-    'dog',
-    'cat',
-    'squirrel',
+    'wolf',
+    'tiger',
+    'unicorn',
     'pig',
+    'boar',
+    'sheep',
+    'dromedary',
     'elephant',
-    'donkey',
-    'sloth'
+    'hamster',
+    'chick'
   ]
+  
   def self.create_user(token)
     id = Digest::SHA1.hexdigest(Time.now.to_s + 'user_id')
     first = FIRST_NAMES.sample
     last = LAST_NAMES.sample
+    avatar = "/avatars/#{last}.png"
+    
     user = {
       name: "#{first.capitalize}.#{last.capitalize}".downcase,
       dm_id: id,
@@ -39,6 +43,7 @@ class TeamGenerator
       first_name: first,
       last_name: last,
       email: "#{first}@#{last}.com",
+      avatar: avatar
     }
     user
   end

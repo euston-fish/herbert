@@ -2,7 +2,7 @@ var socket;
 
 var ChatWindow = function(base) {
   this.base = base;
-  this.message_template = $('#message-template').clone();
+  this.message_template = $('#message-template div').first().clone();
   this.message_area = this.base.children().filter(".message_area");
   this.input_area = this.base.children().filter(".input_area");
   this.message_input = this.input_area.children().filter(".message_input");
@@ -28,9 +28,15 @@ var ChatWindow = function(base) {
 };
 
 ChatWindow.prototype = {
-  pushMsg: function(message) {
+  pushMsg: function(data) {
+    var message = data.message;
+    
     var msgCont = this.message_template.clone();
     msgCont.find('.content').text(message)
+    
+    msgCont.find('.username').text(data.username);
+    msgCont.find('.avatar').attr('src', data.avatar);
+    
     this.message_area.append(msgCont);
     msgCont.show();
     var childs = this.message_area.children()
@@ -87,35 +93,51 @@ FakeSlack.prototype = {
 
 
 function doSlack(teamInfo) {
+  var me = teamInfo.users[0];
+  var bot = teamInfo.bots[0];
+  
   var cw = new ChatWindow($("#fakeSlack"));
 
   var fs = new FakeSlack(teamInfo);
 
   fs.onopen = function() {
-    cw.pushMsg("Connected");
+    cw.pushMsg({
+      message: "Connected"
+    });
     cw.enable();
     cw.on_send = function(msg) {
       fs.send(msg);
-      cw.pushMsg(msg);
+      cw.pushMsg({
+        message: msg,
+        avatar: me.profile.avatar,
+        username: me.name
+      });
       return true;
     }
   }
 
   fs.onmessage = function(data) {
     if(data.type === "message" && data.text) {
-      cw.pushMsg(data.text);
+      cw.pushMsg({
+        message: data.text,
+        avatar: bot.profile.avatar,
+        username: bot.name
+      });
     }
   }
 
 
   fs.onclose = function() {
-    cw.pushMsg("Disconected");
+    cw.pushMsg('status', "Disconected");
     cw.disable();
     cw.on_send = null;
   }
 }
 
+$(document).ready(function() {
+  $('.message_area').height($(window).height() - ($('.input_area').height() * 2));
+});
+
 $.get('/api/rtm.start?token=randomtoken', function(data) {
-  console.log(data);
   doSlack(data);
 });
