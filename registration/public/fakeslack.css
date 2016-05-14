@@ -1,3 +1,7 @@
+body {
+  height: 100%;
+}
+
 #fakeSlack {
   height: 20em;
   border-radius: 1em;
@@ -21,6 +25,11 @@ img.avatar {
 
 .message .username {
   font-weight: bold;
+}
+
+.message.update {
+  font-style: italic;
+  color: #666666;
 }
 
 footer {

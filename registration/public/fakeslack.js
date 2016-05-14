@@ -32,6 +32,8 @@ ChatWindow.prototype = {
     var message = data.message;
     
     var msgCont = this.message_template.clone();
+    
+    msgCont.addClass(data.classes);
     msgCont.find('.content').text(message)
     
     msgCont.find('.username').text(data.username);
@@ -102,7 +104,8 @@ function doSlack(teamInfo) {
 
   fs.onopen = function() {
     cw.pushMsg({
-      message: "Connected"
+      message: 'Connected',
+      classes: 'update'
     });
     cw.enable();
     cw.on_send = function(msg) {
@@ -128,7 +131,10 @@ function doSlack(teamInfo) {
 
 
   fs.onclose = function() {
-    cw.pushMsg('status', "Disconected");
+    cw.pushMsg({
+      message: 'Disconected',
+      classes: 'update'
+    });
     cw.disable();
     cw.on_send = null;
   }
