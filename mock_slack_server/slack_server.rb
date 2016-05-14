@@ -5,14 +5,14 @@ require 'digest/sha1'
 require 'json'
 require 'redis'
 
+require_relative '../config'
 require_relative 'slack_server_bot'
-# require_relative '../bot_server/herbert'
-require_relative '/Users/will/Dropbox/Ruby/slackbot/bots/botbot'
+require_relative '../bot_server/herbert'
 
-HOST = 'localhost'
-PORT = '8080'
+HOST = Config['websocket']['host']
+PORT = Config['websocket']['port']
 
-NEW_DEMO_CHANNEL = 'new_demos'
+NEW_DEMO_CHANNEL = Config['redis_channels']['new_demo']
 
 class SlackServer
   def initialize(host, port, bot)
@@ -98,10 +98,8 @@ class SlackServer
   end
 end
 
-# HerbertBot.send(:include, SlackServerBot)
-# herb = HerbertBot.new 'authkey', log: true
-Bot.send(:include, SlackServerBot)
-herb = Bot.new 'authkey', log: true
+HerbertBot.send(:include, SlackServerBot)
+herb = HerbertBot.new 'authkey', log: true
 
 template ||= ERB.new(File.read(File.expand_path('team_template.json', File.dirname(__FILE__))))
 
