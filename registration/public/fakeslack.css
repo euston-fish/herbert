@@ -1,14 +1,41 @@
 #fakeSlack {
-  height: 20em;
-  background-color: #555;
   border-radius: 1em;
+  padding: 1em;
 }
 
-#fakeSlack > .message_input {
+#fakeSlack .message_area {
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  padding: 0.5em;
+  color: #EEE;
+  background-color: #555;
+  height: 20em;
+  
+}
+
+#fakeSlack .message_input {
   border: none;
   border-radius: 0px;
+  border-bottom-left-radius: 0.5em;
   overflow: auto;
   outline: none;
+  background-color: #777;
+  color: #EEE;
+  height: 2em;
 
   box-shadow: none;
+}
+
+#fakeSlack .send_button {
+  border: none;
+  border-radius: 0px;
+  border-bottom-right-radius: 0.5em;
+  border-left: 1px solid #555;
+  background-color: #777;
+  color: #EEE;
+  height: 2em;
+}
+
+.message + .message {
+  border-top: 1px solid #777;
 }

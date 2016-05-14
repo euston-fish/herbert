@@ -2,12 +2,10 @@ var socket;
 
 var ChatWindow = function(base) {
   this.base = base;
-  this.message_area = $("<div/>", {"class": "message_area"});
-  this.input_area = $("<div/>");
-  this.message_input = $("<input/>", {"class": "message_input", "type": "text"});
-  this.send_button = $("<input/>", {"type": "button", "value": "Send"});
-  this.input_area.append(this.message_input, this.send_button);
-  this.base.append(this.message_area, this.input_area);
+  this.message_area = this.base.children().filter(".message_area");
+  this.input_area = this.base.children().filter(".input_area");
+  this.message_input = this.input_area.children().filter(".message_input");
+  this.send_button = this.input_area.children().filter(".send_button");
   this.disable();
   this.on_send = null;
   var that = this;
@@ -30,7 +28,7 @@ var ChatWindow = function(base) {
 
 ChatWindow.prototype = {
   pushMsg: function(message) {
-    var m = $("<div/>");
+    var m = $("<div/>", {"class": "message"});
     m.append(message);
     this.message_area.append(m);
   },

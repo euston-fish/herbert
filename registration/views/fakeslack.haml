@@ -4,5 +4,8 @@
   .row
     .col-md-6.col-md-offset-3.col-sm-10.col-sm-offset-2
       #fakeSlack
-
+        .message_area
+        .input_area
+          %input.message_input{type: "text"}
+          %input.send_button{type: "submit", value: "Send"}
 %script{src: "fakeslack.js"}
