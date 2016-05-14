@@ -5,13 +5,13 @@ require 'redis'
 require_relative 'auth_manager'
 require_relative '../config'
 
-client_secret = Config['client_secret']
-client_id = Config['client_id']
-
-redis = Redis.new
-auth_manager = AuthManager.new(redis, client_id, client_secret)
-
 class SinatraHerbert < Sinatra::Base
+  
+  client_secret = Config['client_secret']
+  client_id = Config['client_id']
+
+  redis = Redis.new
+  auth_manager = AuthManager.new(redis, client_id, client_secret)
 
   get '/' do
     haml :index
