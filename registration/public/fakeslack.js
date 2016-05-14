@@ -3,10 +3,10 @@ var socket;
 var ChatWindow = function(base) {
   this.base = base;
   this.message_template = $('#message-template div').first().clone();
-  this.message_area = this.base.children().filter(".message_area");
-  this.input_area = this.base.children().filter(".input_area");
-  this.message_input = this.input_area.children().filter(".message_input");
-  this.send_button = this.input_area.children().filter(".send_button");
+  this.message_area = this.base.find(".message_area");
+  this.input_area = this.base.find(".input_area");
+  this.message_input = this.input_area.find(".message_input");
+  this.send_button = this.input_area.find(".send_button");
   this.disable();
   this.on_send = null;
   var that = this;
@@ -36,7 +36,11 @@ ChatWindow.prototype = {
     msgCont.addClass(data.classes);
     msgCont.find('.content').text(message)
     
-    msgCont.find('.username').text(data.username);
+    if(data.username) {
+      msgCont.find('.username').text('@' + data.username);
+    }
+    
+    data.avatar = data.avatar || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     msgCont.find('.avatar').attr('src', data.avatar);
     
     this.message_area.append(msgCont);
