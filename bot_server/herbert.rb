@@ -1,6 +1,5 @@
 require 'realtime-slackbot'
 require 'pry'
-require 'chronic'
 require 'yaml'
 require_relative '../models'
 
