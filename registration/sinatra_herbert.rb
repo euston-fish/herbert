@@ -43,4 +43,12 @@ class SinatraHerbert < Sinatra::Base
     @token = Digest::SHA1.hexdigest(Time.now.to_s + 'token')
     haml :demo
   end
+
+  get '/timesheet' do
+    user = params[:user]
+    if user
+      @actions = Action.where(user_id: user)
+    end
+    haml :timesheet
+  end
 end

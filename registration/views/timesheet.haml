@@ -1,0 +1,11 @@
+%table.table
+  %thead
+    %tr
+      %th Timestamp
+      %th Action
+  - @actions.each do |action|
+    %tr
+      %td
+        = action.timestamp.strftime("%e %b, %H%M")
+      %td
+        = action.action
