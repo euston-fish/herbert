@@ -24,6 +24,7 @@ class SlackServer
   
   def run
     EM.run do
+      @bot.opened
       EM::WebSocket.run(host: @host, port: @port) do |ws|
         ws.onopen do |handshake|
           url_token = handshake.path.split('/').last

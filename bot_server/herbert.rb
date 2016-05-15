@@ -26,6 +26,14 @@ HERBERT_RANGE = [
   /between\s*(?<start>#{TIME})\s*-\s*(?<end>#{TIME})/i,
   /from\s*(?<start>#{TIME})\s*(to|until|til)\s*(?<end>#{TIME})/i
 ]
+HERBERT_TIMESHEET = [
+  /what(.?ve i| have i) done/i,
+  /what(.s| is).*?timesheet\Z/i
+]
+HERBERT_STATUS = [
+  /are you (on|listen(ing)?|t?here|awake)/i,
+  /\Ahello/i
+]
 
 DONE_MESSAGES = [
   'Got it!',
@@ -108,6 +116,7 @@ COMMANDS = [
       str_end = "#{end_h}:#{'%02d' % end_m}"
       
       reply "I'll only bug you from #{str_start} to #{str_end}"
+      true
     end
   ],
   [
@@ -144,6 +153,30 @@ COMMANDS = [
     end
   ],
   [
+    HERBERT_TIMESHEET,
+    proc do |_|
+      reply "http://herbert.euston.fish/timesheet/#{user.id}/1"
+      true
+    end
+  ],
+  [
+    HERBERT_STATUS,
+    proc do |_|
+      delay = session[:delay]
+      start = session[:start_time].to_i
+      fin = session[:end_time].to_i
+      on = session[:herbert]
+      url = "http://herbert.euston.fish/timesheet/#{user.id}/1"
+      
+      if on
+        # TODO show the proper times
+        reply "I'm here, reminding you every #{delay} minutes - from #{start} to #{fin}"
+      else
+        reply "I'm asleep. Wake me up if you want me."
+      end
+    end
+  ],
+  [
     true,
     proc do |_|
       a = Action.create(timestamp: Time.now, action: text, user_id: user.id)
@@ -167,8 +200,8 @@ class HerbertBot < SlackBot::Bot
     user_channels.values.each do |chan|
       chan.session[:last_message] ||= 0
       chan.session[:last_update] ||= 0
-      chan.session[:herbert] ||= false
-      chan.session[:delay] ||= 5
+      chan.session[:herbert] ||= true
+      chan.session[:delay] ||= 60
       chan.session[:start_time] ||= 9
       chan.session[:end_time] ||= 17
     end
@@ -193,7 +226,6 @@ class HerbertBot < SlackBot::Bot
   end
   
   def between_times?(now, start, fin)
-    puts "Is #{start} < #{now} < #{fin}"
     if start < fin
       start <= now && now <= fin
     else
