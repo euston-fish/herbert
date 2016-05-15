@@ -3,7 +3,7 @@ require 'pry'
 require 'yaml'
 require_relative '../models'
 
-TIME = /\d+([:\.\-]?\d+)(pm|am)?/i
+TIME = /\d+([:\.\-]?\d+)?(pm|am)?/i
 
 HERBERT_ON = [
   /\A\s*herbert\s*on\s*\Z/i,
