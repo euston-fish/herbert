@@ -11,7 +11,8 @@ module SlackServerBot
   
   attr_accessor :team_info
   def get_url; end
-  def run; end
+  def run;
+  end
   
   def post(chan, message)
     if chan.is_a? String
@@ -40,5 +41,8 @@ module SlackServerBot
   
   def send_hook(*args)
     hook(*args)
+  end
+  def session
+    @session ||= create_session(team_info['team']['id'])
   end
 end

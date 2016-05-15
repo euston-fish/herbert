@@ -1,11 +1,18 @@
-%table.table
-  %thead
-    %tr
-      %th Timestamp
-      %th Action
-  - @actions.each do |action|
-    %tr
-      %td
-        = action.timestamp.strftime("%e %b, %H%M")
-      %td
-        = action.action
+.container
+  %h1
+    %img{src: '/bot_avatar.png'}
+    Herbert Timesheets
+    - if @day_cutoff
+      since
+      = @day_cutoff.strftime("%b %e")
+  %table.table
+    %thead
+      %tr
+        %th Day
+        %th Time
+        %th Doing...
+    - @actions.each do |action|
+      %tr
+        %td= action.timestamp.strftime("%b %e")
+        %td= action.timestamp.strftime("%H:%M")
+        %td= action.action

@@ -44,11 +44,24 @@ class SinatraHerbert < Sinatra::Base
     haml :demo
   end
 
-  get '/timesheet' do
+  get '/timesheet/:user/?:num_days?' do
     user = params[:user]
-    if user
-      @actions = Action.where(user_id: user)
+    @day_cutoff = if params[:num_days].to_i == 0
+      7.days.ago
+    else
+      [params[:num_days].to_i, 7].min.days.ago
+    end
+    if user.length > 0
+      @actions = Action.where('user_id=? AND timestamp > ?', user, @day_cutoff).all
+    end
+    unless @actions.any?
+      redirect to('/404')
+      return
     end
     haml :timesheet
+  end
+  
+  get '/404' do
+    haml :'404'
   end
 end
