@@ -174,6 +174,7 @@ COMMANDS = [
       else
         reply "I'm asleep. Wake me up if you want me."
       end
+      true
     end
   ],
   [
