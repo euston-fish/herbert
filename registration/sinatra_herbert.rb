@@ -54,10 +54,6 @@ class SinatraHerbert < Sinatra::Base
     if user.length > 0
       @actions = Action.where('user_id=? AND timestamp > ?', user, @day_cutoff).all
     end
-    unless @actions.any?
-      redirect to('/404')
-      return
-    end
     haml :timesheet
   end
   

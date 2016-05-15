@@ -16,3 +16,6 @@
         %td= action.timestamp.strftime("%b %e")
         %td= action.timestamp.strftime("%H:%M")
         %td= action.action
+    - unless @actions.any?
+      %tr
+        %td You haven't made any entries

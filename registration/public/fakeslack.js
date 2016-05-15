@@ -27,6 +27,15 @@ var ChatWindow = function(base) {
   return this;
 };
 
+function linkify(inputText) {
+    var replacedText, replacePattern1;
+
+    replacePattern1 = /(\b(https?|ftp):\/\/herbert\.euston\.fish[^ ]*)/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    return replacedText;
+}
+
 ChatWindow.prototype = {
   pushMsg: function(data) {
     var message = data.message;
@@ -34,7 +43,8 @@ ChatWindow.prototype = {
     var msgCont = this.message_template.clone();
     
     msgCont.addClass(data.classes);
-    msgCont.find('.content').text(message)
+    message = linkify(message);
+    msgCont.find('.content').html(message)
     
     if(data.username) {
       msgCont.find('.username').text('@' + data.username);
