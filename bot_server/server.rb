@@ -1,7 +1,7 @@
 require_relative 'herbert'
 require 'json'
 require 'redis'
-require '../config'
+require_relative '../config'
 
 NEW_TEAM_CHANNEL = Config['redis_channels']['new_team']
 DO_BOTS_LOG = Config['enable_bot_logging']
