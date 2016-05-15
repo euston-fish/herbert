@@ -3,10 +3,10 @@ var socket;
 var ChatWindow = function(base) {
   this.base = base;
   this.message_template = $('#message-template div').first().clone();
-  this.message_area = this.base.children().filter(".message_area");
-  this.input_area = this.base.children().filter(".input_area");
-  this.message_input = this.input_area.children().filter(".message_input");
-  this.send_button = this.input_area.children().filter(".send_button");
+  this.message_area = this.base.find(".message_area");
+  this.input_area = this.base.find(".input_area");
+  this.message_input = this.input_area.find(".message_input");
+  this.send_button = this.input_area.find(".send_button");
   this.disable();
   this.on_send = null;
   var that = this;
@@ -32,9 +32,14 @@ ChatWindow.prototype = {
     var message = data.message;
     
     var msgCont = this.message_template.clone();
+    
+    msgCont.addClass(data.classes);
     msgCont.find('.content').text(message)
     
-    msgCont.find('.username').text(data.username);
+    if(data.username) {
+      msgCont.find('.username').text('@' + data.username);
+    }
+    
     msgCont.find('.avatar').attr('src', data.avatar);
     
     this.message_area.append(msgCont);
@@ -91,6 +96,11 @@ FakeSlack.prototype = {
   }
 }
 
+function connect() {
+  $.get('/api/rtm.start?token=' + token, function(data) {
+    doSlack(data);
+  });
+}
 
 function doSlack(teamInfo) {
   var me = teamInfo.users[0];
@@ -99,10 +109,13 @@ function doSlack(teamInfo) {
   var cw = new ChatWindow($("#fakeSlack"));
 
   var fs = new FakeSlack(teamInfo);
-
+  var wasOpened = false;
+  
   fs.onopen = function() {
+    wasOpened = true;
     cw.pushMsg({
-      message: "Connected"
+      message: 'Connected',
+      classes: 'update'
     });
     cw.enable();
     cw.on_send = function(msg) {
@@ -128,9 +141,15 @@ function doSlack(teamInfo) {
 
 
   fs.onclose = function() {
-    cw.pushMsg('status', "Disconected");
+    if(wasOpened) {      
+      cw.pushMsg({
+        message: 'Disconnected',
+        classes: 'update'
+      });
+    }
     cw.disable();
     cw.on_send = null;
+    window.setTimeout(connect, 5000);
   }
 }
 
@@ -138,6 +157,4 @@ $(document).ready(function() {
   $('.message_area').height($(window).height() - ($('.input_area').height() * 2));
 });
 
-$.get('/api/rtm.start?token=randomtoken', function(data) {
-  doSlack(data);
-});
+connect();

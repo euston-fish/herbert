@@ -10,8 +10,10 @@
               Send
 #message-template{style: "display: none"}
   .message
-    %img.avatar{align: 'left'}
+    %img.avatar{align: 'left', height: '45px', width: '45px', src: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}
     .stuff-right
       .username
       .content
+:javascript
+  var token = '#{@token}';
 %script{src: "fakeslack.js"}
