@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: herbert
+  user: herbert
+  password: herbert
+  pool: 5
