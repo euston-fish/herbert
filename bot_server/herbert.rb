@@ -1,31 +1,18 @@
 require 'realtime-slackbot'
 require 'pry'
-require 'active_record'
 require 'chronic'
 require 'yaml'
+require_relative '../models'
 
 HERBERT_ON = /\A\s*herbert\s*on\s*\Z/i
 HERBERT_OFF = /\A\s*herbert\s*off\s*\Z/i
 HERBERT_DELAY = /\A\s*herbert\s*delay\s*(?<delay>\d+)\s*\Z/i
-
-environment = ENV['RACK_ENV'] || 'development'
-dbconfig = YAML.load File.read('db/config.yml')
-ActiveRecord::Base.establish_connection(dbconfig[environment])
-  #:adapter => 'postgresql',
-  #:encoding => 'unicode',
-  #:database => 'herbert',
-  #:user => 'herbert',
-  #:password => 'herbert',
-  #:pool => 5)
 
 class SlackBot::Message
   def match? reg; text.downcase.match reg end
   def im?; channel.user_channel? end
   def herbert_enabled?; im? && channel.session[:herbert] end
   def herbert_disabled?; im? && !channel.session[:herbert] end
-end
-
-class Action < ActiveRecord::Base
 end
 
 class HerbertBot < SlackBot::Bot
