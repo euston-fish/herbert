@@ -13,6 +13,8 @@ HERBERT_ON = [
 HERBERT_OFF = [
   /\A\s*herbert\s*off\s*\Z/i,
   /\Ashut\s*up/i,
+  /\Afuck\s*(off|you)/i,
+  /\As+h+/i,
   /don'?t\s*remind\s*me/i,
   /don'?t\s*bug\s*(me)/i
 ]
@@ -28,11 +30,17 @@ HERBERT_RANGE = [
 ]
 HERBERT_TIMESHEET = [
   /what(.?ve i| have i) done/i,
-  /what(.s| is).*?timesheet\Z/i
+  /what(.s| is).*?timesheet/i,
+  /where(.s| is).*?timesheet/i
 ]
 HERBERT_STATUS = [
   /are you (on|listen(ing)?|t?here|awake)/i,
   /\Ahello/i
+]
+UNDO = [
+  /forget that/i,
+  /\Aundo\Z/i,
+  /\Ao+ps\Z/i
 ]
 
 DONE_MESSAGES = [
@@ -173,6 +181,20 @@ COMMANDS = [
         reply "I'm here, reminding you every #{delay} minutes - from #{start} to #{fin}"
       else
         reply "I'm asleep. Wake me up if you want me."
+      end
+      true
+    end
+  ],
+  [
+    UNDO,
+    proc do |_|
+      action = Action.where('user_id=? AND timestamp > ?', user.id, 2.minutes.ago).first
+      if action
+        text = action.action
+        action.destroy
+        reply "I removed \"#{text}\" from your timesheet"
+      else
+        reply "¯\\_(ツ)_/¯"
       end
       true
     end

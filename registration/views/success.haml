@@ -1,5 +1,9 @@
-Done:
-- if @error
-  = @error
-- else
-  No errors!
+.container
+  .text-center{style: 'padding-top: 100px'}
+    %img{src: '/bot_avatar.png'}
+    - if @error
+      %h1 Herbert didn't make it to your Slack team
+      %span.emoji 😭
+    - else
+      %h1 Herbert has been added to your Slack team!
+      %span.emoji 🌿🙃
