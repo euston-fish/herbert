@@ -7,8 +7,8 @@ TIME = /\d+([:\.\-]?\d+)(pm|am)?/i
 
 HERBERT_ON = [
   /\A\s*herbert\s*on\s*\Z/i,
-  /\Awake\s*up/,
-  /\Acome\s*back/
+  /\Awake\s*up/i,
+  /\Acome\s*back/i
 ]
 HERBERT_OFF = [
   /\A\s*herbert\s*off\s*\Z/i,
