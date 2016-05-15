@@ -29,11 +29,11 @@ class SlackServer
           url_token = handshake.path.split('/').last
           channel_id = @token_to_channel.delete(url_token)
           puts "Opened: #{url_token}, #{channel_id}"
-          if token_valid?(url_token) && @bot.channel(channel_id)
+          if token_valid?(url_token) && @bot.user_channel(channel_id)
             res = { type: "hello" }.to_json
             ws.send res
             
-            @bot.channel(channel_id).socket = ws
+            @bot.user_channel(channel_id).socket = ws
           else
             puts "Invalid token: #{url_token}"
             ws.close
@@ -83,7 +83,7 @@ class SlackServer
     @bot.add_channel(chan)
     usr = SlackBot::User.new user, @bot
     @bot.add_user(usr)
-    
+    @bot.init_channels
     url_token = Digest::SHA1.hexdigest(user['token'] + user['dm_id'])
     @token_to_channel[url_token] = user['dm_id']
   end

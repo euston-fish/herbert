@@ -29,9 +29,20 @@ module SlackServerBot
     chan.socket.send data.to_json
   end
   
+  def init_channels
+    user_channels.values.each do |chan|
+      chan.session[:last_message] ||= 0
+      chan.session[:last_update] ||= 0
+      chan.session[:herbert] ||= false
+      chan.session[:delay] ||= 5
+      chan.session[:start_time] ||= 9
+      chan.session[:end_time] ||= 17
+    end
+  end
+  
   def add_channel(chan)
-    channels
-    @channels[chan.id] = chan
+    user_channels
+    @user_channels[chan.id] = chan
   end
   
   def add_user(user)
