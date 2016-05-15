@@ -1,3 +1,5 @@
 require 'daemons'
 
-Daemons.run('server.rb')
+path = File.expand_path('../server.rb', __FILE__)
+
+Daemons.run(path)
