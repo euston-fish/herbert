@@ -25,6 +25,8 @@ class SlackServer
   def run
     EM.run do
       @bot.opened
+      # Set the min gap to 0 in the bot (Will actually be 60 seconds)
+      @bot.instance_eval { @gap_minutes = 0 }
       EM::WebSocket.run(host: @host, port: @port) do |ws|
         ws.onopen do |handshake|
           url_token = handshake.path.split('/').last
@@ -113,7 +115,15 @@ herb.team_info = JSON.parse template.result(binding)
 slack_server = SlackServer.new(HOST, PORT, herb)
 
 Thread.new do
-  slack_server.run
+  fail_count = 0
+  while fail_count < 10
+    begin
+      slack_server.run
+    rescue Exception => e
+      fail_count += 1
+      puts e.message
+    end
+  end
 end
 
 pubsub = Redis.new

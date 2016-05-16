@@ -221,6 +221,7 @@ end
 
 class HerbertBot < SlackBot::Bot
   def opened()
+    @gap_minutes = MIN_GAP_MINUTES
     user_channels.values.each do |chan|
       chan.session[:last_message] ||= 0
       chan.session[:last_update] ||= 0
@@ -230,6 +231,7 @@ class HerbertBot < SlackBot::Bot
       chan.session[:end_time] ||= 17
     end
     EM.add_periodic_timer 60 do
+      puts "Sending stuff"
       time = Time.now
       now = time.to_i
       now_time = time.hour + (time.min / 60.0)
@@ -239,7 +241,7 @@ class HerbertBot < SlackBot::Bot
             next
           end
           if now - chan.session[:last_update] > 60 * chan.session[:delay]
-            if now - chan.session[:last_message] > 60 * MIN_GAP_MINUTES
+            if now - chan.session[:last_message] > 60 * @gap_minutes
               chan.post "What have you been doing in the last #{chan.session[:delay]} minutes?"
               chan.session[:last_message] = Time.now.to_i
             end
