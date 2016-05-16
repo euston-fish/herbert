@@ -19,7 +19,7 @@ HERBERT_OFF = [
   /don'?t\s*bug\s*(me)/i
 ]
 HERBERT_DELAY = [
-  /\A\s*herbert\s*delay\s*(?<delay>\d+)\s*\Z/i,
+  /\A\s*herbert\s*delay\s*(?<delay>\d+)\s*(?<unit>\w+)?\Z/i,
   /(every|each)\s*(?<delay>\d+)?\s*(?<unit>\w+)?/i
 ]
 THANKS_HERBERT = /thanks|thank\s*you/i

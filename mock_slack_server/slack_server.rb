@@ -113,12 +113,7 @@ herb.team_info = JSON.parse template.result(binding)
 slack_server = SlackServer.new(HOST, PORT, herb)
 
 Thread.new do
-  begin
-    slack_server.run
-  rescue Exception => e
-    puts e.message
-    binding.pry
-  end
+  slack_server.run
 end
 
 pubsub = Redis.new
