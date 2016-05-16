@@ -26,7 +26,12 @@ module SlackServerBot
       channel: chan.id,
       text: message.to_s
     }
-    chan.socket.send data.to_json
+    if chan.socket != nil
+      puts "Posting to #{chan.id} #{chan.name}: #{message}"
+      chan.socket.send data.to_json
+    else
+      puts "Can't send to channel: #{chan.id}"
+    end
   end
   
   def init_channels

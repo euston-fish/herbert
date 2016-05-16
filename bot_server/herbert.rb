@@ -202,7 +202,8 @@ COMMANDS = [
   [
     true,
     proc do |_|
-      a = Action.create(timestamp: Time.now, action: text, user_id: user.id)
+      # TODO Fix this shit
+      a = Action.create(timestamp: Time.now + 12.hours, action: text, user_id: user.id)
       session[:last_update] = Time.now.to_i
       reply "#{DONE_MESSAGES.sample}! #{GOOD_EMOJI.sample}"
       true
